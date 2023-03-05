@@ -1,21 +1,31 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
-import Navbar from "./components/Navbar";
-import Home from "./components/Home";
-import About from "./components/About";
+import "./styl/App.styl";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { EverBrand } from "./components/Themes/EverBrandTheme";
+import ApplicationRouter from "./routes";
 
 function App() {
+  // Check .env file for app name, otherwise default to basic default color.
+  const appName = process.env.REACT_APP_TITLE;
+  const defaultTheme = createTheme({
+    palette: {
+      primary: {
+        main: "#ADD8E6",
+      },
+      secondary: {
+        main: "#01016f",
+      },
+    },
+  });
+
+  const appTheme = appName === "EverBrand" ? EverBrand : defaultTheme;
   return (
-    <div className="app">
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" exact component={Home} />
-          <Route path="/about" exact component={About} />
-        </Routes>
-      </Router>
-    </div>
+    <ThemeProvider theme={appTheme}>
+      <CssBaseline enableColorScheme />
+      <div className="app">
+        <ApplicationRouter />
+      </div>
+    </ThemeProvider>
   );
 }
 
